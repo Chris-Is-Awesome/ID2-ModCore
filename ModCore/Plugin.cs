@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 
 namespace ID2.ModCore;
 
-[BepInPlugin("id2.ModCore", "ModCore", "0.1.0")]
+[BepInPlugin("id2.ModCore", "ModCore", "1.0.0")]
 public class Plugin : BaseUnityPlugin
 {
 	internal static new ManualLogSource Logger;

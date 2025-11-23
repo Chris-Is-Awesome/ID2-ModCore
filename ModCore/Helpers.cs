@@ -117,7 +117,11 @@ public static class Helpers
 			section: section,
 			onChanged: value =>
 			{
-				UnregisterHotkey(GetHotkeyFromCallback(onHotkeyPressed).Hotkey, onHotkeyPressed);
+				HotkeyData hotkey = GetHotkeyFromCallback(onHotkeyPressed);
+
+				if (hotkey != null)
+					UnregisterHotkey(hotkey.Hotkey, onHotkeyPressed);
+
 				RegisterHotkey(value.MainKey, onHotkeyPressed);
 			},
 			neverSave: neverSave,
