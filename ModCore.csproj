@@ -20,7 +20,7 @@
 		<ModName>ModCore</ModName>
 		<ExportDir>$(OutputPath)\Export</ExportDir>
 		<ManagedDir>$(GameInstallPath)\ID2_Data\Managed</ManagedDir>
-		<DocumentationFile>$(TargetDir)\$(AssemblyName).xml</DocumentationFile>
+		<DocumentationFile>$(MSBuildProjectDirectory)\bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
