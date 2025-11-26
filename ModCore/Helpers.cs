@@ -186,17 +186,6 @@ public static class Helpers
 	}
 
 	/// <summary>
-	/// Converts the hex color string to a <see cref="Color32"/>.
-	/// </summary>
-	/// <param name="hex">The hex color string to convert.</param>
-	/// <returns>The resulting <see cref="Color32"/>.</returns>
-	public static Color32 ConvertHexToColor32(string hex)
-	{
-		ColorUtility.DoTryParseHtmlColor(hex, out Color32 color);
-		return color;
-	}
-
-	/// <summary>
 	/// Converts a <see cref="Color"/> to a hex color string.
 	/// </summary>
 	/// <param name="color">The <see cref="Color"/> to convert.</param>

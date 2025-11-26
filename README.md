@@ -113,11 +113,6 @@ public static Color ConvertHexToColor(string hex)
 ```
 
 ```cs
-// Converts a hex color string to a Color32.
-public static Color32 ConvertHexToColor32(string hex)
-```
-
-```cs
 // Converts a Color to a hex color string.
 public static string ConvertColorToHex(Color color)
 ```
