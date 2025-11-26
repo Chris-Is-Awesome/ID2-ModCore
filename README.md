@@ -222,3 +222,6 @@ public static string ColorText(string text, string color)
 ```
 
 </details>
+
+## Libraries Used
+- [Newtonsoft.Json](https://www.newtonsoft.com/json)
