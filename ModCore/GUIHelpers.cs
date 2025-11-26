@@ -49,10 +49,12 @@ public static class GUIHelpers
 	/// <param name="values">An array of values that fills the scroll list.</param>
 	/// <param name="height">The height for the element.</param>
 	/// <param name="selectedValue">The resulting value that is selected.</param>
+	/// <param name="onChanged">Callback to run when the selection has changed.</param>
 	/// <param name="options"><see cref="GUILayoutOption"/> overrides to change how the element looks.</param>
-	public static void CreateVerticalScrollList(object label, ref Vector2 currentScrollPos, object currentValue, string[] values, int height, out string selectedValue, params GUILayoutOption[] options)
+	public static void CreateVerticalScrollList(object label, ref Vector2 currentScrollPos, object currentValue, string[] values, int height, out string selectedValue, Action<string> onChanged = null, params GUILayoutOption[] options)
 	{
 		Vector2 scrollPos = currentScrollPos;
+		Vector2 oldScrollPos = scrollPos;
 		string newSelectedValue = string.Empty;
 
 		CreateVerticalLayout(() =>
@@ -68,6 +70,9 @@ public static class GUIHelpers
 
 		currentScrollPos = scrollPos;
 		selectedValue = newSelectedValue;
+
+		if (onChanged != null && currentValue.ToString() != newSelectedValue)
+			onChanged(newSelectedValue);
 	}
 
 	/// <summary>
