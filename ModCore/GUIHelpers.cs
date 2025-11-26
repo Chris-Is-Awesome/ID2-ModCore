@@ -59,7 +59,8 @@ public static class GUIHelpers
 
 		CreateVerticalLayout(() =>
 		{
-			CreateCenteredLabel(label);
+			if (label != null && !string.IsNullOrEmpty(label.ToString()))
+				CreateCenteredLabel(label);
 
 			scrollPos = GUILayout.BeginScrollView(scrollPos, GUILayout.Height(height));
 			int index = Array.IndexOf(values, currentValue);
