@@ -18,6 +18,15 @@ internal static class Logger
 	}
 
 	/// <summary>
+	/// Logs a message to the BepInEx console.
+	/// </summary>
+	/// <param name="message">The message to log.</param>
+	public static void LogInfo(object message)
+	{
+		Plugin.Logger.LogInfo(message);
+	}
+
+	/// <summary>
 	/// Logs a warning to the BepInEx console.
 	/// </summary>
 	/// <param name="message">The message to log.</param>
@@ -30,7 +39,7 @@ internal static class Logger
 	/// Logs an error to the BepInEx console.
 	/// </summary>
 	/// <param name="message">The message to log.</param>
-	/// <param name="includeTrace">If true, the stack trace will be given.</param>
+	/// <param name="includeTrace">Should the stack trace be printed after the message?</param>
 	public static void LogError(object message, bool includeTrace = true)
 	{
 		Plugin.Logger.LogError(includeTrace ? message + "\n" + GetStackTrace() : message);

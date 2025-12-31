@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
@@ -10,7 +11,7 @@ using UnityEngine.SceneManagement;
 
 namespace ID2.ModCore;
 
-[BepInPlugin("id2.ModCore", "ModCore", "1.0.0")]
+[BepInPlugin(PluginInfo.guid, PluginInfo.name, PluginInfo.version)]
 public class Plugin : BaseUnityPlugin
 {
 	internal static new ManualLogSource Logger;
@@ -23,20 +24,21 @@ public class Plugin : BaseUnityPlugin
 		instance = this;
 		Logger = base.Logger;
 
-		Logger.LogInfo($"Plugin ModCore (id2.ModCore) is loaded!");
-
 		try
 		{
 			// Mod initialization code here
 			LoadEmbeddedAssemblies();
 
-			var harmony = new Harmony("id2.ModCore");
+			Harmony harmony = new(PluginInfo.guid);
 			harmony.PatchAll();
 		}
-		catch (System.Exception err)
+		catch (Exception ex)
 		{
-			Logger.LogError(err);
+			ModCore.Logger.LogError($"Unhandled exception during initialization: {ex.Message}");
+			return;
 		}
+
+		Logger.LogInfo($"Initialized [{PluginInfo.name} {PluginInfo.version}]");
 	}
 
 	private void OnEnable()
@@ -57,6 +59,7 @@ public class Plugin : BaseUnityPlugin
 	private void OnApplicationQuit()
 	{
 		Events.GameQuit();
+		BackupLogFileOnQuit();
 	}
 
 	private void LoadEmbeddedAssemblies()
@@ -81,6 +84,51 @@ public class Plugin : BaseUnityPlugin
 			{
 				Logger.LogError($"Failed to load {name}: {ex}");
 			}
+		}
+	}
+
+	private void BackupLogFileOnQuit()
+	{
+		string logPath = Helpers.CombinePaths(Paths.BepInExRootPath, "LogOutput.log");
+
+		if (!File.Exists(logPath))
+		{
+			return;
+		}
+
+		string backupDir = Helpers.CombinePaths(Paths.BepInExRootPath, "backup logs");
+		DateTime now = DateTime.Now;
+		Directory.CreateDirectory(backupDir);
+
+		// Delete old log files
+		foreach (string file in Directory.GetFiles(backupDir, "*.log"))
+		{
+			try
+			{
+				FileInfo info = new(file);
+
+				if ((now - info.CreationTime).TotalHours > 24)
+				{
+					info.Delete();
+				}
+			}
+			catch (Exception ex)
+			{
+				ModCore.Logger.LogWarning($"Failed to delete old log '{file}': {ex.Message}");
+			}
+		}
+
+		// Copy log file
+		string timestamp = now.ToString("yyyy-MM-dd_HH-mm-ss");
+		string backupPath = Helpers.CombinePaths(backupDir, $"Log_{timestamp}.log");
+
+		try
+		{
+			File.Copy(logPath, backupPath, true);
+		}
+		catch (Exception ex)
+		{
+			ModCore.Logger.LogError($"Failed to copy log: {ex.Message}");
 		}
 	}
 

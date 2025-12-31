@@ -1,22 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="config.targets" Condition="Exists('config.targets')" />
+	
 	<PropertyGroup>
 		<RootNamespace>ID2</RootNamespace>
 		<AssemblyName>ModCore</AssemblyName>
-		<AssemblyTitle>ModCore</AssemblyTitle>
-		<Product>ModCore</Product>
-		<Description>A mod for Ittle Dew 2.</Description>
+		<AssemblyTitle>Mod Core</AssemblyTitle>
+		<Product>Mod Core</Product>
 		<TargetFramework>net35</TargetFramework>
 		<LangVersion>Latest</LangVersion>
 		<OutputPath>$(SolutionDir)Build\</OutputPath>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NoWarn>1591</NoWarn>
-	</PropertyGroup>
 
-	<Import Project="config.targets" Condition="Exists('config.targets')" />
-	
-	<!-- Custom properties-->
-	<PropertyGroup>
+		<!-- Custom properties-->
 		<ModName>ModCore</ModName>
 		<ExportDir>$(OutputPath)\Export</ExportDir>
 		<ManagedDir>$(GameInstallPath)\ID2_Data\Managed</ManagedDir>
@@ -26,9 +22,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
 		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3" PrivateAssets="all" />
-	</ItemGroup>
 
-	<ItemGroup>
 		<Reference Include="BepInEx">
 			<HintPath>$(PluginsPath)\..\core\BepInEx.dll</HintPath>
 			<Private>false</Private>
