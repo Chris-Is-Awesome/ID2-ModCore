@@ -142,6 +142,16 @@ public static T DeserializeJsonObject<T>(string json)
 public static Canvas CreateCanvas(string objName, RenderMode renderMode = RenderMode.ScreenSpaceOverlay)
 ```
 
+```cs
+// Combines multiple paths into one, automatically using the correct OS-based path separator.
+public static string CombinePaths(params string[] paths)
+```
+
+```cs
+// Creates a Texture2D from an array of bytes.
+public static Texture2D CreateTextureFromBytes(byte[] bytes)
+```
+
 </details>
 
 <details>

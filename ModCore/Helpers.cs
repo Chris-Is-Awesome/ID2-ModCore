@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -306,6 +307,34 @@ public static class Helpers
 		scaler.referenceResolution = new Vector2(1920, 1080);
 
 		return canvas;
+	}
+
+	/// <summary>
+	/// Combines multiple paths into one, automatically using the correct OS-based path separator.
+	/// </summary>
+	/// <param name="paths">The paths to combine.</param>
+	/// <returns>The combined path as a string.</returns>
+	public static string CombinePaths(params string[] paths)
+	{
+		return paths.Aggregate(Path.Combine);
+	}
+
+	/// <summary>
+	/// Creates a <see cref="Texture2D"/> from an array of bytes.
+	/// </summary>
+	/// <param name="bytes">The array of bytes.</param>
+	public static Texture2D CreateTextureFromBytes(byte[] bytes)
+	{
+		try
+		{
+			Texture2D texture = new(512, 512, TextureFormat.RGBA32, false);
+			texture.LoadImage(bytes);
+			return texture;
+		}
+		catch (Exception ex)
+		{
+			throw new Exception($"Error: {ex.Message}");
+		}
 	}
 
 	private static HotkeyData GetHotkeyFromCallback(Action callback)
