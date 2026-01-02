@@ -8,10 +8,6 @@ internal class Patches
 	[HarmonyPostfix, HarmonyPatch(typeof(EntityEventsOwner), nameof(EntityEventsOwner.SendDetailedDeath))]
 	public static void SendEntityDeathEvent(Entity ent, Killable.DetailedDeathData data)
 	{
-		// Don't run for PlayerEnt
-		if (ent == Globals.Player)
-			return;
-
 		Events.EntityKilled(ent, data);
 	}
 
@@ -35,5 +31,13 @@ internal class Patches
 	public static void SpawnPositionUpdated(SceneDoor __instance, string wantedDoor)
 	{
 		Globals.SpawnPoint = string.IsNullOrEmpty(wantedDoor) ? __instance._correspondingDoor : wantedDoor;
+	}
+
+	[HarmonyPrefix, HarmonyPatch(typeof(MainMenu), nameof(MainMenu.StartGame))]
+	public static void SendFileStartEvent(MainMenu __instance)
+	{
+		IDataSaver startSaver = __instance._saver.GetSaver("/local/start", true);
+		bool isNewFile = startSaver == null;
+		Events.FileStarted(isNewFile);
 	}
 }

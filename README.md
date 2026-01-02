@@ -20,11 +20,13 @@ These are accessed via the `Events` static class.
 Event | Parameters | Notes
 ----- | ---- | -----
 `OnPlayerSpawned` | `Entity` player | Runs *before* `OnSceneLoaded`.
+`OnPlayerKilled` | `Killable.DetailedDeathData` data | Does not run if player is killed by warping from pause menu.
 `OnEntityKilled` | `Entity` entity, `Killable.DetailedDeathData` data | Does not run if the Entity killed is `PlayerEnt`.
 `OnSceneLoaded` | `Scene` scene, `LoadSceneMode` mode | Runs *after* `OnPlayerSpawned`.
 `OnRoomChanged` | `LevelRoom` from, `LevelRoom` to, `EntityEventsOwner.RoomEventData` data | Does not run on scene load—use `OnSceneLoaded` instead.
-`OnPaused` | `bool` paused |
-`OnGameQuit` | (none) |
+`OnFileStarted` | `bool` isNewFile | Runs in main menu when a file is loaded or a new file is created.
+`OnPaused` | `bool` paused
+`OnGameQuit` | (none)
 
 </details>
 
