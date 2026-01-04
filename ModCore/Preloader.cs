@@ -101,6 +101,7 @@ public class Preloader
 	private IEnumerator PreloadAll(System.Action onDone)
 	{
 		PreloadingScreen preloadingScreen = new();
+		List<Scene> preloadedScenes = new();
 		bool hasDoneFadeOut = false;
 		int loopCount = 0;
 
@@ -119,14 +120,14 @@ public class Preloader
 					preloadingScreen.TogglePreloadingScreen();
 					hasDoneFadeOut = true;
 				}, Vector3.zero);
+
+				// Wait for fadeout to finish
+				yield return new WaitUntil(() => hasDoneFadeOut);
 			}
 
-			// Wait for fadeout to finish
-			yield return new WaitUntil(() => { return hasDoneFadeOut; });
-
 			// Wait for scene to load
-			yield return SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
 			Logger.Log($"Preloading scene {sceneToLoad}...");
+			yield return SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
 			Scene sceneToUnload = SceneManager.GetActiveScene();
 			SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneToLoad));
 			yield return SceneManager.UnloadSceneAsync(sceneToUnload);
