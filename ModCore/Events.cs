@@ -68,7 +68,7 @@ public static class Events
 	public delegate void OnPlayerKilledFunc(Killable.DetailedDeathData data);
 	public delegate void OnSceneLoadedFunc(Scene scene, LoadSceneMode mode);
 	public delegate void OnRoomChangedFunc(LevelRoom from, LevelRoom to, EntityEventsOwner.RoomEventData data);
-	public delegate void OnFileStartedFunc(bool isNewFile);
+	public delegate void OnFileStartedFunc(bool isNewFile, Action onPreloadDone = null);
 	public delegate void OnPausedFunc(bool paused);
 
 	internal static void PlayerSpawned(Entity player, GameObject camera, PlayerController controller)
@@ -115,9 +115,14 @@ public static class Events
 		OnRoomChanged?.Invoke(from, to, data);
 	}
 
-	internal static void FileStarted(bool isNewFile)
+	internal static void FileStarted(bool isNewFile, Action onPreloadDone = null)
 	{
 		OnFileStarted?.Invoke(isNewFile);
+
+		Preloader.Instance.StartPreload(() =>
+		{
+			onPreloadDone?.Invoke();
+		});
 	}
 
 	internal static void Paused(bool pause)

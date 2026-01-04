@@ -24,7 +24,7 @@ Event | Parameters | Notes
 `OnEntityKilled` | `Entity` entity, `Killable.DetailedDeathData` data | Does not run if the Entity killed is `PlayerEnt`.
 `OnSceneLoaded` | `Scene` scene, `LoadSceneMode` mode | Runs *after* `OnPlayerSpawned`.
 `OnRoomChanged` | `LevelRoom` from, `LevelRoom` to, `EntityEventsOwner.RoomEventData` data | Does not run on scene load—use `OnSceneLoaded` instead.
-`OnFileStarted` | `bool` isNewFile | Runs in main menu when a file is loaded or a new file is created.
+`OnFileStarted` | `bool` isNewFile, Action onPreloadDone = null | Runs in main menu when a file is loaded or a new file is created. This runs before preloading has finished, and invokes `onPreloadDone` once preloading has completed.
 `OnPaused` | `bool` paused
 `OnGameQuit` | (none)
 
@@ -232,6 +232,55 @@ public static void AddColor(string color, Action callback)
 ```cs
 // Adds color tags to a string.
 public static string ColorText(string text, string color)
+```
+
+</details>
+
+<details>
+<summary>Preloader</summary>
+
+A system that allows for caching scene objects in an efficient way.
+
+Preloading happens when a file is started or created and loads to the saved scene when done.
+
+Each scene that gets preloaded will invoke the `onLoadedSceneCallback`, allowing mod authors to run any code they want during the preload.
+
+Scenes and `onLoadedSceneCallback`s get dealt with in the order they're sent in. If the given `scene` to preload already exists in preload list, the callback will get appended to the existing scene in the Dictionary.
+
+Public static methods:
+```cs
+// Returns the preloaded object of the given type and name, if found; null otherwise.
+public static T GetPreloadedObject<T>(string objName)
+```
+```cs
+// Adds objects to the preload list. When preloading starts, all objects in this list will get preloaded.
+public static void AddObjectToPreloadList(string scene, OnLoadedSceneFunc onLoadedSceneCallback)
+```
+```cs
+public delegate Object[] OnLoadedSceneFunc();
+```
+
+Example usage:
+```cs
+// Caches the MatriarchSpawner from Bad Dream
+Events.OnFileStarted += (bool isNewFile, System.Action onPreloadDone = null) => 
+{
+	Preloader.AddObjectToPreloadList("Deep26", () =>
+	{
+		return [
+			GameObject.Find("MatriarchSpawner")
+		];
+	});
+
+	onPreloadDone = () =>
+	{
+		// Do stuff after preload
+	}
+};
+```
+```cs
+// Fetches the cached MatriarchSpawner
+Preloader.GetPreloadedObject<GameObject>("MatriarchSpawner");
 ```
 
 </details>
