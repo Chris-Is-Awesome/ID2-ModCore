@@ -10,6 +10,7 @@ public static class Globals
 	private static Entity m_player;
 	private static SaverOwner m_mainSaver;
 	private static string m_spawnPoint;
+	private static Font m_vanillaFont;
 
 	/// <summary>
 	/// Returns PlayerEnt's <see cref="Entity"/> component.
@@ -68,6 +69,18 @@ public static class Globals
 	/// Returns <b>true</b> if the game is paused.
 	/// </summary>
 	public static bool IsPaused { get; internal set; }
+
+	/// <summary>
+	/// Returns the vanilla "Cutscene" font used by the game. This is the only font used.
+	/// </summary>
+	public static Font VanillaFont
+	{
+		get
+		{
+			m_vanillaFont ??= Resources.Load<FontMaterialMap>("FontMaterialMap")._data[0].font;
+			return m_vanillaFont;
+		}
+	}
 
 	internal static void UpdateCurrentRoom(LevelRoom currentRoom)
 	{
