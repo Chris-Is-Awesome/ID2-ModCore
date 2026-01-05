@@ -24,7 +24,8 @@ Event | Parameters | Notes
 `OnEntityKilled` | `Entity` entity, `Killable.DetailedDeathData` data | Does not run if the Entity killed is `PlayerEnt`.
 `OnSceneLoaded` | `Scene` scene, `LoadSceneMode` mode | Runs *after* `OnPlayerSpawned`.
 `OnRoomChanged` | `LevelRoom` from, `LevelRoom` to, `EntityEventsOwner.RoomEventData` data | Does not run on scene load—use `OnSceneLoaded` instead.
-`OnFileStarted` | `bool` isNewFile, Action onPreloadDone = null | Runs in main menu when a file is loaded or a new file is created. This runs before preloading has finished, and invokes `onPreloadDone` once preloading has completed.
+`OnFileStarted` | `bool` isNewFile | Runs in main menu when a file is loaded or a new file is created, *before* preloading has started. This is useful for if you want to add objects to preload list.
+`OnPreloadDone` | `bool` isNewFile | Runs in main menu *after* preloading has finished. Preloading is started after `OnFileStarted` is invoked.
 `OnPaused` | `bool` paused
 `OnGameQuit` | (none)
 

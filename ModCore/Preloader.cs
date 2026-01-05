@@ -89,6 +89,12 @@ public class Preloader
 
 	internal void StartPreload(System.Action onDone = null)
 	{
+		if (objectsToPreload.Count < 1)
+		{
+			onDone?.Invoke();
+			return;
+		}
+
 		objectHolder = new GameObject("Preloaded Objects").transform;
 		objectHolder.gameObject.SetActive(false);
 		Object.DontDestroyOnLoad(objectHolder);
